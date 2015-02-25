@@ -31,7 +31,7 @@ module GhostReader
       def lookup(locale, key, scope = [], options = {})
         raise 'no fallback given' if config.fallback.nil?
         log "lookup: #{locale} #{key} #{scope.inspect} #{options.inspect}"
-        
+
         result = config.fallback.send(:lookup, locale, key, scope, options)
         log "fallback result: #{result.inspect}"
       rescue Exception => ex
@@ -97,7 +97,7 @@ module GhostReader
         log "Performing initial request."
         response = config.client.initial_request
         memoize_merge! response[:data]
-        self.missings = {} # initialized                                                              
+        self.missings = {} # initialized
         log "Initial request successfull.", :info
       rescue => ex
         log "Exception initializing retrieval: #{ex}", :error
@@ -153,7 +153,7 @@ module GhostReader
       def symbolize_keys(hash)
         hash.each.inject({}) do |symbolized_hash, key_value|
           key, value = key_value
-          symbolized_hash.merge!({key.to_sym, value})
+          symbolized_hash.merge!({key.to_sym => value})
         end
       end
 

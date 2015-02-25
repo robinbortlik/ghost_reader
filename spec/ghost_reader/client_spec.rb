@@ -14,7 +14,7 @@ describe GhostReader::Client do
 
   context 'on class level' do
     it 'should nicely initialize' do
-      GhostReader::Client.new.should be_an_instance_of(GhostReader::Client)
+      expect(GhostReader::Client.new).to be_an_instance_of(GhostReader::Client)
     end
   end
 
@@ -34,8 +34,8 @@ describe GhostReader::Client do
                     :status => 200,
                     :headers => { "last-modified" => httpdate } } )
       response = client.initial_request
-      response[:status].should eq(200)
-      response[:data].should eq(body)
+      expect(response[:status]).to eq(200)
+      expect(response[:data]).to eq(body)
     end
 
     it 'should try to reconnect configured number of times if there is timeout' do
@@ -45,7 +45,7 @@ describe GhostReader::Client do
                     :status => 408,
                     :headers => { "last-modified" => httpdate } } )
 
-      client.config.logger.should_receive(:error).exactly(3).times
+      expect(client.config.logger).to receive(:error).exactly(3).times
 
       response = client.initial_request
     end
@@ -56,7 +56,7 @@ describe GhostReader::Client do
                   { :body => nil,
                     :status => 302 } )
       response = client.reporting_request(some_data)
-      response[:status].should eq(302)
+      expect(response[:status]).to eq(302)
     end
 
     it 'should log error if reporting_request response is not a redirect' do
@@ -65,10 +65,10 @@ describe GhostReader::Client do
                   { :body => nil,
                     :status => 200 })
 
-      client.config.logger.should_receive(:error)
+      expect(client.config.logger).to receive(:error)
 
       response = client.reporting_request(some_data)
-      response[:status].should eq(200)
+      expect(response[:status]).to eq(200)
     end
 
     it 'should nicely respond to incremental_request with 200' do
@@ -78,8 +78,8 @@ describe GhostReader::Client do
                     :status => 200,
                     :headers => { "last-modified" => httpdate } } )
       response = client.incremental_request
-      response[:status].should eq(200)
-      response[:data].should eq(body)
+      expect(response[:status]).to eq(200)
+      expect(response[:data]).to eq(body)
     end
 
     it 'should nicely respond to incremental_request with 304' do
@@ -88,8 +88,8 @@ describe GhostReader::Client do
                     :status => 304,
                     :headers => { "last-modified" => httpdate } } )
       response = client.incremental_request
-      response[:status].should eq(304)
-      response[:data].should be_nil
+      expect(response[:status]).to eq(304)
+      expect(response[:data]).to be_nil
     end
 
   end
